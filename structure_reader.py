@@ -38,10 +38,27 @@ class process_structure:
                     block_counter[block_name] = 1
         return block_counter
 
-# testFileName="test6.mcstructure"
-# excludedBlocks=["minecraft:structure_block","minecraft:air"]
+    def create_block(self, x, y, z):
+        block = pallete[0]
+        
+
+
+test_file_name = "test.mcstructure"
+test = process_structure(test_file_name)
+excluded_blocks = ["minecraft:structure_block", "minecraft:air"]
+
+print(test.get_blockmap())
+# for x in range(test.get_size()[0]):
+#     for y in range(test.get_size()[1]):
+#         for z in range(test.get_size()[2]):
+#             print(test.get_block(x, y, z))
+# print(test.get_size())
+blocks = test.get_block_list(excluded_blocks)
+print(blocks)
+
 # test=process_structure(testFileName)
 # block_count=test.get_block_list(excludedBlocks)
-# for i in block_count.keys():
-##    print("{}: {}".format(i,block_count[i]))
+# for i in blocks.keys():
+#    print(str(i) + str(blocks[i]))
+#    print("{}: {}".format(i,blocks[i]))
 # print(test.get_block(10,1,8))
