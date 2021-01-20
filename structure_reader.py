@@ -1,5 +1,6 @@
 import nbtlib
 import numpy as np
+import block_class
 
 
 class process_structure:
@@ -38,27 +39,23 @@ class process_structure:
                     block_counter[block_name] = 1
         return block_counter
 
-    def create_block(self, x, y, z):
-        block = pallete[0]
+    ##Makes a list with all blocks from the structure as Block class
+    def create_blocks(self):
+        block_list = []
+        index = 0
+        for block in self.palette:
+            states = {}
+            for key in block["states"].keys():
+                states[key] = block["states"][key]
+            block_list.append(block_class.Block(block["name"], states, index))
+            index += 1
+        # print(block_list)
+        return block_list
+
         
 
 
 test_file_name = "test.mcstructure"
 test = process_structure(test_file_name)
-excluded_blocks = ["minecraft:structure_block", "minecraft:air"]
+test.create_blocks()
 
-print(test.get_blockmap())
-# for x in range(test.get_size()[0]):
-#     for y in range(test.get_size()[1]):
-#         for z in range(test.get_size()[2]):
-#             print(test.get_block(x, y, z))
-# print(test.get_size())
-blocks = test.get_block_list(excluded_blocks)
-print(blocks)
-
-# test=process_structure(testFileName)
-# block_count=test.get_block_list(excludedBlocks)
-# for i in blocks.keys():
-#    print(str(i) + str(blocks[i]))
-#    print("{}: {}".format(i,blocks[i]))
-# print(test.get_block(10,1,8))
