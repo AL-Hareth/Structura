@@ -14,8 +14,9 @@ from tkinter import filedialog
 
 def generate_pack(struct_name, pack_name):
     while os.path.isfile("{}.mcpack".format(pack_name)) or pack_name == "":
-        pack_name = filedialog.asksaveasfilename(initialdir = os.getcwd(),title = "Select a New Name",filetypes = (("pack files","*.mcpack"),("all files","*.*")))
-        
+        pack_name = filedialog.asksaveasfilename(initialdir=os.getcwd(
+        ), title="Select a New Name", filetypes=(("pack files", "*.mcpack"), ("all files", "*.*")))
+
     manifest.export(pack_name)
     struct2make = structure_reader.process_structure(struct_name)
     armorstand = armor_stand_class.armorstand()
@@ -30,38 +31,46 @@ def generate_pack(struct_name, pack_name):
                 block = struct2make.get_block(x, y, z)
                 rot = None
                 top = False
-                variant="Default"
+                variant = "Default"
                 if "wall_block_type" in block["states"].keys():
-                    variant = ["wall_block_type",block["states"]["wall_block_type"]]
+                    variant = ["wall_block_type",
+                               block["states"]["wall_block_type"]]
                 if "wood_type" in block["states"].keys():
-                    variant = ["wood_type",block["states"]["wood_type"]]
+                    variant = ["wood_type", block["states"]["wood_type"]]
                     if block["name"] == "minecraft:wood":
                         keys = block["states"]["wood_type"]
                         if bool(block["states"]["stripped_bit"]):
-                            keys+="_stripped"
-                        variant = ["wood",keys]
+                            keys += "_stripped"
+                        variant = ["wood", keys]
                 if "old_log_type" in block["states"].keys():
-                    variant = ["old_log_type",block["states"]["old_log_type"]]
+                    variant = ["old_log_type", block["states"]["old_log_type"]]
                 if "new_log_type" in block["states"].keys():
-                    variant = ["new_log_type",block["states"]["new_log_type"]]
+                    variant = ["new_log_type", block["states"]["new_log_type"]]
                 if "stone_type" in block["states"].keys():
-                    variant = ["stone_type",block["states"]["stone_type"]]
+                    variant = ["stone_type", block["states"]["stone_type"]]
                 if "prismarine_block_type" in block["states"].keys():
-                    variant = ["prismarine_block_type",block["states"]["prismarine_block_type"]]
+                    variant = ["prismarine_block_type",
+                               block["states"]["prismarine_block_type"]]
                 if "stone_brick_type" in block["states"].keys():
-                    variant = ["stone_brick_type",block["states"]["stone_brick_type"]]
+                    variant = ["stone_brick_type",
+                               block["states"]["stone_brick_type"]]
                 if "color" in block["states"].keys():
-                    variant = ["color",block["states"]["color"]]
+                    variant = ["color", block["states"]["color"]]
                 if "sand_stone_type" in block["states"].keys():
-                    variant = ["sand_stone_type",block["states"]["sand_stone_type"]]
+                    variant = ["sand_stone_type",
+                               block["states"]["sand_stone_type"]]
                 if "stone_slab_type" in block["states"].keys():
-                    variant = ["stone_slab_type",block["states"]["stone_slab_type"]]
+                    variant = ["stone_slab_type",
+                               block["states"]["stone_slab_type"]]
                 if "stone_slab_type_2" in block["states"].keys():
-                    variant = ["stone_slab_type_2",block["states"]["stone_slab_type_2"]]
+                    variant = ["stone_slab_type_2",
+                               block["states"]["stone_slab_type_2"]]
                 if "stone_slab_type_3" in block["states"].keys():
-                    variant = ["stone_slab_type_3",block["states"]["stone_slab_type_3"]]
+                    variant = ["stone_slab_type_3",
+                               block["states"]["stone_slab_type_3"]]
                 if "stone_slab_type_4" in block["states"].keys():
-                    variant = ["stone_slab_type_4",block["states"]["stone_slab_type_4"]]
+                    variant = ["stone_slab_type_4",
+                               block["states"]["stone_slab_type_4"]]
                 if "facing_direction" in block["states"].keys():
                     rot = block["states"]["facing_direction"]
 
@@ -74,10 +83,8 @@ def generate_pack(struct_name, pack_name):
                 if "upside_down_bit" in block["states"].keys():
                     top = bool(block["states"]["upside_down_bit"])
 
-
                 armorstand.make_block(x, y, z, block["name"].replace(
-                    "minecraft:", ""), rot = rot, top = top,variant = variant)
-
+                    "minecraft:", ""), rot=rot, top=top, variant=variant)
 
     armorstand.export(pack_name)
     animation.export(pack_name)
@@ -89,24 +96,25 @@ def generate_pack(struct_name, pack_name):
 
     # Adds to zip file a modified armor stand geometry to enlarge the render area of the entity
     larger_render = "lookups/armor_stand.larger_render.geo.json"
-    larger_render_path = "{}/models/entity/{}".format(pack_name, "armor_stand.larger_render.geo.json")
+    larger_render_path = "{}/models/entity/{}".format(
+        pack_name, "armor_stand.larger_render.geo.json")
     copyfile(larger_render, larger_render_path)
 
     rc = "lookups/armor_stand.ghost_blocks.render_controllers.json"
     rcpath = "{}/render_controllers/{}".format(pack_name, rc)
     os.makedirs(os.path.dirname(rcpath))
-    
+
     copyfile(rc, rcpath)
     biggeo = "lookups/armor_stand.larger_render.geo.json"
-    biggeopath = "{}/models/entity/{}".format(pack_name,"armor_stand.larger_render.geo.json")
+    biggeopath = "{}/models/entity/{}".format(
+        pack_name, "armor_stand.larger_render.geo.json")
     copyfile(biggeo, biggeopath)
     file_paths = []
-    for directory,_,_ in os.walk(pack_name):
+    for directory, _, _ in os.walk(pack_name):
         file_paths.extend(glob.glob(os.path.join(directory, "*.*")))
-    
-        
-    with ZipFile("{}.mcpack".format(pack_name), 'x') as zip: 
-        # writing each file one by one 
+
+    with ZipFile("{}.mcpack".format(pack_name), 'x') as zip:
+        # writing each file one by one
 
         for file in file_paths:
             print(file)
@@ -122,7 +130,8 @@ def runFromGui():
 def browseStruct():
     FileGUI.set(filedialog.askopenfilename(filetypes=(
         ("Structure File", "*.mcstructure *.MCSTRUCTURE"), )))
-#def delete(pack_name):
+# def delete(pack_name):
+
 
 root = Tk()
 root.title("Bedrock Litematica Maker")

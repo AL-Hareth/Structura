@@ -14,8 +14,8 @@ class Block:
         for java_block in block_mappings.keys():
             if block_mappings.get(java_block).get("bedrock_identifier", None) == self.block_name_be and block_mappings.get(java_block).get("bedrock_states", None) == self.block_states_be:
 
-                ## java_block format is minecraft:redstone_wire[east=up,north=up,power=0,south=up,west=up]
-                ## So if it has any blockstates it contains '[' character, so we split name and blockstates from java_block
+                # java_block format is minecraft:redstone_wire[east=up,north=up,power=0,south=up,west=up]
+                # So if it has any blockstates it contains '[' character, so we split name and blockstates from java_block
                 if "[" in java_block:
                     self.block_name_java = java_block.split("[")[0]
                     self.block_states_java = java_block.split(
