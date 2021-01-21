@@ -51,5 +51,5 @@ blocks["powered_repeater"] = blocks["unpowered_repeater"]
 blocks["powered_comparator"] = blocks["unpowered_repeater"]
 
 
-with open("block_roation.json", "w+") as json_file:
+with open("block_rotation.json", "w+") as json_file:
     json.dump(blocks, json_file, indent=2)
