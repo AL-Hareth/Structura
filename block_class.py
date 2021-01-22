@@ -8,7 +8,11 @@ class Block:
         self.block_name_be = name
         self.block_states_be = states
         self.index = index
-        # Search the Java equivalent block in the mappings and save it's name and blockstates
+        self.find_java_equivalent()
+        self.find_model_and_texture()
+
+    # Search the Java equivalent block in the mappings and save it's name and blockstates
+    def find_java_equivalent(self):
         with open("lookups/block_mappings.json") as block_mappings:
             block_mappings = json.load(block_mappings)
         for java_block in block_mappings.keys():
@@ -26,6 +30,9 @@ class Block:
 
                 break
 
+    def find_model_and_texture(self):
+        return
+        
     def __repr__(self):
         return str(self.block_name_be + ", " + str(self.block_states_be) + ", " + str(self.index))
 
