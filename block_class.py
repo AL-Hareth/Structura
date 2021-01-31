@@ -9,7 +9,7 @@ class Block:
         self.block_states_be = states
         self.index = index
         self.find_java_equivalent()
-        self.find_model()
+        self.find_bedrock_model()
 
     # Search the Java equivalent block in the mappings and save it's name and blockstates
     def find_java_equivalent(self):
@@ -30,30 +30,41 @@ class Block:
 
                 break
 
-    #Search the model of the block and it's rotation 
-    def find_model(self):
-        path = "Vanilla_Java_Resource_Pack/blockstates"
-        with open(path + "/" + self.block_name_java.replace("minecraft:", "") + ".json") as blockstates_file:
-            blockstates = json.load(blockstates_file)
+    # Will be needed in the future
+    # # Search the model of the block and it's rotation
+    # def find_java_model(self):
+    #     path = "Vanilla_Java_Resource_Pack/blockstates"
+    #     with open(path + "/" + self.block_name_java.replace("minecraft:", "") + ".json") as blockstates_file:
+    #         blockstates = json.load(blockstates_file)
 
-        if blockstates.contains("variants"):
-            for blockstate in blockstates["variants"].keys():
-                if blockstate == self.block_states_java:
-                    print(blockstates["variants"][blockstate])
-                    self.model = blockstates["variants"][blockstate]["model"]
+    #     if blockstates.get("variants") != None:
+    #         for blockstate in blockstates["variants"].keys():
+    #             if blockstate == self.block_states_java:
+    #                 self.model = blockstates["variants"][blockstate]["model"]
 
-                    x = blockstates["variants"][blockstate].get("x")
-                    y = blockstates["variants"][blockstate].get("y")
-                    z = blockstates["variants"][blockstate].get("z")
+    #                 x = blockstates["variants"][blockstate].get("x")
+    #                 y = blockstates["variants"][blockstate].get("y")
+    #                 z = blockstates["variants"][blockstate].get("z")
 
-                    self.rotation = [x if x != None else 0, y if y != None else 0, z if z != None else 0]
-                    print(self.model)
-                    print(self.rotation)
-        else:
-            self.model = "UNDEFINED"
-            self.rotation = [0, 0, 0]
-        return
-        
+    #                 self.rotation = [x if x != None else 0,
+    #                                  y if y != None else 0, z if z != None else 0]
+    #     # If there is no variants option, that means is a multipart block
+    #     # (fence, glass pane, wall, iron bars, bamboo, brewing stand, mushroom block mushroom stem, chorus, composter, fire, soulfire or redstone wire)
+    #     # Will hardcode those models
+    #     else:
+    #         self.model = "UNDEFINED"
+    #         self.rotation = [0, 0, 0]
+    #     print(self.model)
+    #     print(self.rotation)
+
+    def find_bedrock_model(self):
+        with open("lookups/blockshapes.json") as block_shapes:
+            block_shapes = json.load(block_shapes)
+        for be_block in block_shapes.keys():
+            if be_block == self.block_name_be:
+                self.blockshape_be = block_shapes.get(be_block)
+                print(self.blockshape_be)
+
     def __repr__(self):
         return str(self.block_name_be + ", " + str(self.block_states_be) + ", " + str(self.index))
 
